@@ -7,5 +7,5 @@
 ### TODO
 
 - [x] build base frame
-- [ ] ipfs utils
-- [ ] wallet connect modal
+- [x] ipfs utils
+- [x] wallet connect modal

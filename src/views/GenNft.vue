@@ -5,7 +5,7 @@ import { NFTStorage, Blob } from "nft.storage";
 import { useStorage, StorageSerializers } from "@vueuse/core";
 import { ElMessage, ElLoading } from "element-plus";
 import { NFT_STORAGE_TOKEN } from "@/utils/constants";
-import { mobContract } from "@/utils/contract/index";
+import { mobContract } from "@/utils/contract/contract";
 
 const formLabelAlign = reactive({
 	name: "",

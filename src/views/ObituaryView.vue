@@ -1,6 +1,6 @@
 <script setup>
 import altPic from "@/assets/logo.png";
-import { mobContract } from "@/utils/contract/index";
+import { mobContract } from "@/utils/contract/contract";
 import { ref } from "vue";
 import SkeletonComp from "@/components/SkeletonComp.vue";
 

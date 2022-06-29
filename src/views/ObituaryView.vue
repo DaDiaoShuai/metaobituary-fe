@@ -6,33 +6,42 @@ import SkeletonComp from "@/components/SkeletonComp.vue";
 
 const datas = ref([]);
 
-const fetchExploreData = () => {
+const fetchExploreData = async () => {
 	try {
 		const myContract = mobContract();
 		const methods = myContract.methods;
-		methods
-			.totalSupply()
-			.call()
-			.then((res) => {
-				res = res > 10 ? 10 : res;
-				for (let i = 0; i < res; i++) {
-					methods
-						.tokenByIndex(i)
-						.call()
-						.then((token) => {
-							methods
-								.tokenURI(token)
-								.call()
-								.then((uri) => {
-									fetch(uri)
-										.then((d) => d.json())
-										.then((d) => {
-											datas.value.push(d);
-										});
-								});
-						});
-				}
-			});
+		let totalSupplyCount = await methods.totalSupply().call();
+		totalSupplyCount = totalSupplyCount > 10 ? 10 : totalSupplyCount;
+		for (let i = totalSupplyCount - 1; i >= 0; i--) {
+			const token = await methods.tokenByIndex(i).call();
+			const uri = await methods.tokenURI(token).call();
+			const fetchData = await fetch(uri);
+			const _data = await fetchData.json();
+			datas.value.push(_data);
+		}
+		// methods
+		// 	.totalSupply()
+		// 	.call()
+		// 	.then((res) => {
+		// 		res = res > 10 ? 10 : res;
+		// 		for (let i = 0; i < res; i++) {
+		// 			methods
+		// 				.tokenByIndex(i)
+		// 				.call()
+		// 				.then((token) => {
+		// 					methods
+		// 						.tokenURI(token)
+		// 						.call()
+		// 						.then((uri) => {
+		// 							fetch(uri)
+		// 								.then((d) => d.json())
+		// 								.then((d) => {
+		// 									datas.value.push(d);
+		// 								});
+		// 						});
+		// 				});
+		// 		}
+		// 	});
 	} catch (error) {
 		console.log(error);
 	}

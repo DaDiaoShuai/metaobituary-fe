@@ -2,7 +2,7 @@
 import { LINKS } from "@/utils/constants";
 </script>
 <template>
-	<section class="footer py-28 px-3 bg-bg-soft">
+	<section id="footer" class="footer py-28 px-3 bg-bg-soft">
 		<div class="footer-inner container max-w-7xl mx-auto">
 			<div>
 				<h4 class="text-[2.2em] font-bold">Contributors:</h4>

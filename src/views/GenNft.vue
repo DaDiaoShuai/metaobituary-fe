@@ -4,7 +4,7 @@ import { Plus } from "@element-plus/icons-vue";
 import { NFTStorage, Blob } from "nft.storage";
 import { useStorage, StorageSerializers } from "@vueuse/core";
 import { ElMessage, ElLoading } from "element-plus";
-import { NFT_STORAGE_TOKEN } from "@/utils/constants";
+import { NFT_STORAGE_TOKEN, GAS_PRICE } from "@/utils/constants";
 import { mobContract } from "@/utils/contract/contract";
 
 const formLabelAlign = reactive({
@@ -27,9 +27,12 @@ const dialogImageUrl = ref("");
 
 const uploadRef = ref(null);
 
-const userAccount = useStorage("userAccount", null, undefined, {
-	serializer: StorageSerializers.object,
-});
+const userAccount = () => {
+	const _account = useStorage("userAccount", null, undefined, {
+		serializer: StorageSerializers.object,
+	});
+	return _account.value;
+};
 
 const handleRemove = (uploadFile, uploadFiles) => {
 	console.log(uploadFile, uploadFiles);
@@ -85,7 +88,7 @@ const httpRequestHandler = async (file) => {
 		const myContract = mobContract();
 		myContract.methods
 			.mint(tokenURI)
-			.send({ from: userAccount.value.account, value: 30000000000000000 })
+			.send({ from: userAccount().account, value: GAS_PRICE })
 			.then((d) => {
 				console.log(d);
 			})
@@ -99,7 +102,7 @@ const httpRequestHandler = async (file) => {
 
 const genNft = () => {
 	if (!isReady) return;
-	if (!userAccount.value) {
+	if (!userAccount()) {
 		return ElMessage({
 			type: "warning",
 			message: "Please connect wallet first!",

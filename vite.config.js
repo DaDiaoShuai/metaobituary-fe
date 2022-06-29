@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from "url";
-
+const { resolve } = require("path");
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
@@ -33,6 +33,17 @@ export default defineConfig({
 	build: {
 		commonjsOptions: {
 			include: [/node_modules/],
+		},
+		rollupOptions: {
+			input: {
+				main: resolve(__dirname, "index.html"),
+				mint: resolve(__dirname, "mint/index.html"),
+			},
+		},
+	},
+	server: {
+		hmr: {
+			overlay: false,
 		},
 	},
 });

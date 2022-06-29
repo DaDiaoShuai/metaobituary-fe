@@ -24,3 +24,5 @@ export const NFT_STORAGE_TOKEN =
 export const CONTRACT_ADDRESS = "0x007b4CaD1707E8375DF70888352b0A10856C287F";
 
 export const MOB_ABI = metaAbi;
+
+export const GAS_PRICE = 30000000000000000;

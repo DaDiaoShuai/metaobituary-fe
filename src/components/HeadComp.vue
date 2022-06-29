@@ -63,17 +63,18 @@ const copyHandler = () => {
 			<div class="uppercase tracking-[2px] text-base">Meta Obituary</div>
 		</a>
 		<div class="actions">
+			<a href="/" class="hidden sm:inline-block mr-2 underline">Home</a>
 			<router-link
 				to="/obituarys"
 				v-show="currentRoute !== '/obituarys'"
-				class="mr-4 underline"
+				class="mr-2 underline"
 				>Explore</router-link
 			>
 			<router-link
 				to="/gen"
-				v-show="currentRoute !== '/gen'"
-				class="mr-4 underline"
-				>Publish Obituary</router-link
+				v-show="currentRoute !== '/gen' && hasUserInfo"
+				class="mr-2 underline"
+				>Publish</router-link
 			>
 			<a
 				href="javascript:void(0);"
@@ -84,7 +85,7 @@ const copyHandler = () => {
 			>
 			<div class="inline-block" v-else>
 				<span
-					class="font-bold mr-1.5 cursor-pointer p-1 rounded-full will-change-auto transition-all hover:bg-highlight-color/50"
+					class="hidden sm:inline-block font-bold mr-1.5 cursor-pointer p-1 rounded-full will-change-auto transition-all hover:bg-highlight-color/50"
 					@click="copyHandler"
 					>{{ clipString(userData && userData.account) }}
 				</span>

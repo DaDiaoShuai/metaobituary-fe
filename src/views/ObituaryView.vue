@@ -73,10 +73,14 @@ const formatUTCDate = (date) => {
 						>
 							{{ item.name }}
 						</h3>
-						<span class="mb-1.5">{{
-							formatUTCDate(item.brith)
-						}}</span
-						><i>-</i><span>{{ formatUTCDate(item.death) }}</span>
+						<p class="inline-block mb-1.5">
+							<span>{{ formatUTCDate(item.brith) }}</span
+							><i>-</i
+							><span>{{ formatUTCDate(item.death) }}</span>
+						</p>
+						<p class="inline-block mb-1.5 sm:ml-1.5">
+							{{ item.careOf }}
+						</p>
 					</div>
 					<p class="break-all">
 						{{ item.description }}

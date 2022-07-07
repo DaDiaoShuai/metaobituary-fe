@@ -6,6 +6,8 @@ import { useStorage, StorageSerializers } from "@vueuse/core";
 import { ElMessage, ElLoading } from "element-plus";
 import { NFT_STORAGE_TOKEN, GAS_PRICE } from "@/utils/constants";
 import { mobContract } from "@/utils/contract/contract";
+import { onConnect } from "@/utils/web3/web3modal";
+import { useConnectStore } from "@/stores/connect";
 
 const formLabelAlign = reactive({
 	name: "",
@@ -14,6 +16,8 @@ const formLabelAlign = reactive({
 	brith: "",
 	death: "",
 });
+
+const connectStore = useConnectStore();
 
 const isReady = computed(() => {
 	const { name, description, careOf, brith, death } = formLabelAlign;
@@ -34,6 +38,10 @@ const userAccount = () => {
 	return _account.value;
 };
 
+const isConnected = computed(() => {
+	return connectStore.isConnected;
+});
+
 const handleRemove = (uploadFile, uploadFiles) => {
 	console.log(uploadFile, uploadFiles);
 };
@@ -45,6 +53,13 @@ const handlePictureCardPreview = (uploadFile) => {
 
 const handleChange = (file) => {
 	console.log(file);
+};
+
+const connectHandler = async () => {
+	const res = await onConnect();
+	if (!res) return;
+	connectStore.connect(res[1]);
+	connectStore.setUserData(res[0]);
 };
 
 const httpRequestHandler = async (file) => {
@@ -113,7 +128,7 @@ const genNft = () => {
 </script>
 
 <template>
-	<main>
+	<main v-if="isConnected">
 		<h3 class="text-2xl px-4 py-8 text-center">
 			Create an Obituary NFT of your loved one that lasts forever.
 		</h3>
@@ -189,6 +204,13 @@ const genNft = () => {
 			</el-form>
 		</section>
 	</main>
+	<h3 v-else class="text-2xl px-4 py-8 text-center">
+		Please
+		<a href="javascript:void(0);" class="underline" @click="connectHandler"
+			>connect</a
+		>
+		your wallet first.
+	</h3>
 
 	<el-dialog v-model="picPreviewDialogVisible">
 		<img w-full :src="dialogImageUrl" alt="Preview Image" />

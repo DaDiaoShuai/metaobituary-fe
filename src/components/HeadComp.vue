@@ -2,13 +2,15 @@
 import Logo from "@/assets/logo.png";
 import { RouterLink, useRoute } from "vue-router";
 import { onConnect, onDisconnect } from "@/utils/web3/web3modal";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useClipboard, useStorage, StorageSerializers } from "@vueuse/core";
 import { ElMessage } from "element-plus";
+import { useConnectStore } from "@/stores/connect";
 
 import { cloneDeep } from "lodash-es";
 
 const route = useRoute();
+const connectStore = useConnectStore();
 
 const currentRoute = computed(() => route.path);
 
@@ -16,25 +18,25 @@ const _userAccount = useStorage("userAccount", null, undefined, {
 	serializer: StorageSerializers.object,
 });
 
-let userData = ref(null);
-let hasUserInfo = ref(false);
+const userData = computed(() => connectStore.userData);
+const hasUserInfo = computed(() => connectStore.isConnected);
 
 if (_userAccount && _userAccount.value) {
-	userData.value = cloneDeep(_userAccount.value);
-	hasUserInfo.value = true;
+	connectStore.setUserData(cloneDeep(_userAccount.value));
+	connectStore.connect(true);
 }
 
 const connectHandler = async () => {
 	const res = await onConnect();
 	if (!res) return;
-	userData.value = res[0];
-	hasUserInfo.value = res[1];
+	connectStore.setUserData(res[0]);
+	connectStore.connect(res[1]);
 };
 
 const disconnectHandler = () => {
 	const res = onDisconnect();
-	userData.value = res[0];
-	hasUserInfo.value = res[1];
+	connectStore.setUserData(res[0]);
+	connectStore.connect(res[1]);
 };
 
 const clipString = (str) => str && `${str.substr(0, 6)}...${str.substr(-5)}`;
@@ -72,7 +74,7 @@ const copyHandler = () => {
 			>
 			<router-link
 				to="/gen"
-				v-show="currentRoute !== '/gen' && hasUserInfo"
+				v-show="currentRoute !== '/gen'"
 				class="mr-2 underline"
 				>Publish</router-link
 			>

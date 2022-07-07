@@ -4,7 +4,7 @@ const router = createRouter({
 	routes: [
 		{
 			path: "/",
-			redirect: "/obituarys",
+			redirect: "/gen",
 		},
 		{
 			path: "/gen",

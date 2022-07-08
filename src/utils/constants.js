@@ -15,6 +15,10 @@ export const LINKS = [
 		title: "@meditic",
 		url: "https://twitter.com/meditic",
 	},
+	{
+		title: "@coolb",
+		url: "https://twitter.com/CoolB__",
+	},
 ];
 
 export const NFT_STORAGE_TOKEN =
